@@ -1,0 +1,58 @@
+{
+  "data": [
+    {
+    "id": "var-yYXXXXXXXXX",
+    "type": "vars",
+    "attributes": {
+      "key": "cidr_subnet",
+      "value": "[\"10.0.5.0/24\"]",
+      "sensitive": false,
+      "category": "terraform",
+      "hcl": true,
+      "created-at": "2021-04-14T15:08:53.569Z",
+      "description": null
+    },
+    "relationships": {
+      "configurable": {
+      "data": {
+        "id": "ws-gxxxxxxxxxx",
+        "type": "workspaces"
+      },
+      "links": {
+        "related": "/api/v2/organizations/test/workspaces/test"
+      }
+      }
+    },
+    "links": {
+      "self": "/api/v2/workspaces/ws-xxxxxx/vars/var-xxxxxx"
+    }
+    },
+    {
+    "id": "var-xxxxxxxxxxxxxxx",
+    "type": "vars",
+    "attributes": {
+      "key": "database_name",
+      "value": "db",
+      "sensitive": false,
+      "category": "terraform",
+      "hcl": false,
+      "created-at": "2021-03-30T15:07:10.784Z",
+      "description": null
+    },
+    "relationships": {
+      "configurable": {
+      "data": {
+        "id": "ws-xxxxxxxxxx",
+        "type": "workspaces"
+      },
+      "links": {
+        "related": "/api/v2/organizations/test/workspaces/test"
+      }
+      }
+    },
+    "links": {
+      "self": "/api/v2/workspaces/ws-xxxxxx/vars/var-xxxxx"
+    }
+    }
+  ]
+}
