@@ -3,8 +3,8 @@
 This simple golang program helps to manage terraform cloud variables.
 It allow:
 
-1. Read all variables in a workspace.
-2. Load variables - in the format provided at the step 1 - into an existeing workspace.
+1. Read all variables from a workspace.
+2. Load variables - in the format provided at the step 1 - into an existing workspace.
 
 
 ## Requirements
@@ -18,6 +18,9 @@ It allow:
 ```bash
 > git clone https://github.com/pagopa/tfcloudvars.git
 > cd tfcloudvars
+> # run tests
+> go test ./...
+# help
 > go run main.go help
 
 Usage of /tmp/go-build148387471/b001/exe/main:
@@ -29,4 +32,13 @@ Usage of /tmp/go-build148387471/b001/exe/main:
         bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN
   -ws string
         Terraform cloud workspace id to read from or to save in.
+
+# set terraform cloud token.
+export TF_TOKEN=5i*****......................................*****2Ls
+
+go run main.go -do read -ws ws-<my ws> ./vars.json
+
+# edit the file. eg: change values
+# load the variables in another workspace.
+go run main.go -do save -ws ws-<new ws> -file ./vars.json
 ```
