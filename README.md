@@ -9,7 +9,7 @@ It allow:
 
 ## Requirements
 
-1. [Terraform cloud](https://app.terraform.io/) account with an organization and one or more workspace.
+1. [Terraform cloud](https://app.terraform.io/) account with an organization and one or more workspaces.
 2. Terraform cloud access [token](https://app.terraform.io/app/settings/tokens).
 3. golang 1.15.* installed
 
@@ -36,7 +36,7 @@ Usage of /tmp/go-build148387471/b001/exe/main:
 # set terraform cloud token.
 export TF_TOKEN=5i*****......................................*****2Ls
 
-go run main.go -do read -ws ws-<my ws> ./vars.json
+go run main.go -do read -ws ws-<my ws> > ./vars.json
 
 # edit the file. eg: change values
 # load the variables in another workspace.
