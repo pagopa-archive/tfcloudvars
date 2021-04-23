@@ -36,9 +36,22 @@ Usage of /tmp/go-build148387471/b001/exe/main:
 # set terraform cloud token.
 export TF_TOKEN=5i*****......................................*****2Ls
 
-go run main.go -do read -ws ws-<my ws> > ./vars.json
+> go run main.go -do read -ws ws-<my ws> > ./vars.json
 
 # edit the file. eg: change values
 # load the variables in another workspace.
-go run main.go -do save -ws ws-<new ws> -file ./vars.json
+> go run main.go -do save -ws ws-<new ws> -file ./vars.json
+```
+
+## Build
+
+```bash
+# build binary file:
+> make
+```
+
+## Run unite tests
+
+```bash
+> make test
 ```
