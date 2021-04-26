@@ -25,13 +25,13 @@ It allow:
 
 Usage of /tmp/go-build148387471/b001/exe/main:
   -do string
-        Operation: [read | save|help] (default "help")
+        Operation: [read|load|help] (default "help")
   -file string
         json file with variables to load in a workspace
   -token string
         bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN
   -ws string
-        Terraform cloud workspace id to read from or to save in.
+        Terraform cloud workspace id to read from or to load in.
 
 # set terraform cloud token.
 export TF_TOKEN=5i*****......................................*****2Ls
@@ -40,7 +40,7 @@ export TF_TOKEN=5i*****......................................*****2Ls
 
 # edit the file. eg: change values
 # load the variables in another workspace.
-> go run main.go -do save -ws ws-<new ws> -file ./vars.json
+> go run main.go -do load -ws ws-<new ws> -file ./vars.json
 ```
 
 ## Build

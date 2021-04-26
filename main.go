@@ -30,7 +30,7 @@ var Usage = func() {
 }
 
 func init() {
-	flag.StringVar(&do, "do", "help", "Operation: [read | save|help]")
+	flag.StringVar(&do, "do", "help", "Operation: [read|load|help]")
 	flag.StringVar(&workspace, "ws", "", "Terraform cloud workspace id to read from or to save in.")
 	flag.StringVar(&fileName, "file", "", "json file with variables to load in a workspace")
 	flag.StringVar(&token, "token", LookupEnvOrString("TF_TOKEN", ""), "bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN")
@@ -55,7 +55,7 @@ func main() {
 	switch do {
 	case "read":
 		read()
-	case "save":
+	case "load":
 		save()
 	default:
 		Usage()
