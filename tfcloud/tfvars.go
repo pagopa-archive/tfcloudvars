@@ -113,6 +113,37 @@ func (v *Payload) Json(indent bool) (data string, err error) {
 	return tojson(v, indent)
 }
 
+func (v *TerraformVars) TfVarsJson(indent bool) (data string, err error) {
+
+	t := make(map[string]interface{})
+
+	for _, v := range v.Data {
+
+		if v.Sensitive == true {
+			t[v.Key] = "sensitive"
+		} else {
+			t[v.Key] = v.Value
+		}
+	}
+
+	var byteArray []byte
+
+	if indent == true {
+		byteArray, err = json.MarshalIndent(t, "  ", "  ")
+	} else {
+		byteArray, err = json.Marshal(t)
+	}
+
+	if err != nil {
+		return "", fmt.Errorf("[ERROR] Marshalng map to json %t", err)
+	}
+
+	data = string(byteArray)
+
+	return
+
+}
+
 func (v *TerraformVars) Get(w string, t string) (err error) {
 
 	req, err := http.NewRequest("GET", fmt.Sprintf(TF_CLOUD_URL, w), nil)
