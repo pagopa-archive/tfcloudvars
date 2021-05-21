@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 const (
@@ -122,8 +123,9 @@ func (v *TerraformVars) TfVarsJson(indent bool) (data string, err error) {
 		if v.Sensitive == true {
 			t[v.Key] = "sensitive"
 		} else {
-			t[v.Key] = v.Value
+			t[v.Key] = stringToJsonType(v.Value)
 		}
+
 	}
 
 	var byteArray []byte
@@ -255,4 +257,29 @@ func (v *TerraformVars) Post(w string, t string) (err error) {
 	}
 
 	return nil
+}
+
+func stringToJsonType(s string) interface{} {
+
+	i, err := strconv.Atoi(s)
+
+	if err == nil {
+		return i
+	}
+
+	f, err := strconv.ParseFloat(s, 32)
+
+	if err == nil {
+		return f
+	}
+
+	switch s {
+	case "true":
+		return true
+	case "false":
+		return false
+	}
+
+	return s
+
 }

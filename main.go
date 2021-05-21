@@ -111,6 +111,8 @@ func save() {
 		os.Exit(1)
 	}
 
+	log.Println("Load into workspace")
+
 	err = t.Post(workspace, token)
 
 	if err != nil {
