@@ -14,6 +14,7 @@ var (
 	fileName  string
 	workspace string
 	token     string
+	format    string
 )
 
 func LookupEnvOrString(key string, defaultVal string) string {
@@ -34,6 +35,7 @@ func init() {
 	flag.StringVar(&workspace, "ws", "", "Terraform cloud workspace id to read from or to save in.")
 	flag.StringVar(&fileName, "file", "", "json file with variables to load in a workspace")
 	flag.StringVar(&token, "token", LookupEnvOrString("TF_TOKEN", ""), "bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN")
+	flag.StringVar(&format, "format", "json", "Output format [json|tfvars]")
 
 	flag.Parse()
 }
@@ -66,19 +68,30 @@ func read() {
 
 	t := tfcloud.TerraformVars{}
 
+	var err error
+	var j string
+
 	if err := t.Get(workspace, token); err != nil {
 		log.Printf("[ERROR]: %t", err)
 		os.Exit(1)
 	}
 
-	j, err := t.Json(true)
+	switch format {
+	case "json":
+		j, err = t.Json(true)
+	case "tfvars":
+		j, err = t.ToTfVars(true)
+	default:
+		log.Println("[INFO] wrong format value.")
+		Usage()
+	}
 
 	if err != nil {
 		log.Printf("[ERROR]: %t", err)
 		os.Exit(1)
 	}
-
 	fmt.Println(j)
+
 }
 
 func save() {
@@ -97,6 +110,8 @@ func save() {
 		log.Println(fmt.Sprintf("[ERROR] %s", err.Error()))
 		os.Exit(1)
 	}
+
+	log.Println("Load into workspace")
 
 	err = t.Post(workspace, token)
 

@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 const (
@@ -111,6 +113,51 @@ func (v *TerraformVars) Json(indent bool) (data string, err error) {
 
 func (v *Payload) Json(indent bool) (data string, err error) {
 	return tojson(v, indent)
+}
+
+func cleanHcl(data string) string {
+
+	data = strings.ReplaceAll(data, "\"{", "{")
+	data = strings.ReplaceAll(data, "}\"", "}")
+	data = strings.ReplaceAll(data, "\\\"", "\"")
+	data = strings.ReplaceAll(data, "\"[", "[")
+	data = strings.ReplaceAll(data, "]\"", "]")
+	data = strings.ReplaceAll(data, "\\n", "")
+
+	return data
+}
+
+func (v *TerraformVars) ToTfVars(indent bool) (data string, err error) {
+
+	t := make(map[string]interface{})
+
+	for _, v := range v.Data {
+
+		if v.Sensitive == true {
+			t[v.Key] = "sensitive"
+		} else {
+			t[v.Key] = stringToJsonType(v.Value)
+		}
+
+	}
+
+	var byteArray []byte
+
+	if indent == true {
+		byteArray, err = json.MarshalIndent(t, "  ", "  ")
+	} else {
+		byteArray, err = json.Marshal(t)
+	}
+
+	if err != nil {
+		return "", fmt.Errorf("[ERROR] Marshalng map to json %t", err)
+	}
+
+	data = string(byteArray)
+	data = cleanHcl(data)
+
+	return
+
 }
 
 func (v *TerraformVars) Get(w string, t string) (err error) {
@@ -224,4 +271,29 @@ func (v *TerraformVars) Post(w string, t string) (err error) {
 	}
 
 	return nil
+}
+
+func stringToJsonType(s string) interface{} {
+
+	i, err := strconv.Atoi(s)
+
+	if err == nil {
+		return i
+	}
+
+	f, err := strconv.ParseFloat(s, 32)
+
+	if err == nil {
+		return f
+	}
+
+	switch s {
+	case "true":
+		return true
+	case "false":
+		return false
+	}
+
+	return s
+
 }

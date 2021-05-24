@@ -505,3 +505,75 @@ func TestFileNotFound(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestToTfVarsJsonHcl(t *testing.T) {
+	v := TerraformVars{}
+
+	v.Data = append(v.Data, Data{ID: "var-a12eqwq", Type: "vars", Attributes: Attributes{
+		Category:    "terraform",
+		Created_at:  "2021-04-14T15:08:53.569Z",
+		Description: "null",
+		Hcl:         true,
+		Key:         "cidr_subnet",
+		Sensitive:   false,
+		Value:       "[\"10.0.5.0/24\"]",
+	}, Links: Links{
+		Self: "/api/v2/workspaces/ws-xxxxxx/vars/var-xxxxxx",
+	}})
+
+	expected := "{\"cidr_subnet\":[\"10.0.5.0/24\"]}"
+	actual, _ := v.ToTfVars(false)
+
+	if expected != actual {
+		t.Log(fmt.Printf("error expected %s actual %s", expected, actual))
+		t.Fail()
+	}
+}
+
+func TestToTfVarsJsonStr(t *testing.T) {
+	v := TerraformVars{}
+
+	v.Data = append(v.Data, Data{ID: "var-a12eqwq", Type: "vars", Attributes: Attributes{
+		Category:    "terraform",
+		Created_at:  "2021-04-14T15:08:53.569Z",
+		Description: "null",
+		Hcl:         false,
+		Key:         "name",
+		Sensitive:   false,
+		Value:       "api",
+	}, Links: Links{
+		Self: "/api/v2/workspaces/ws-xxxxxx/vars/var-xxxxxx",
+	}})
+
+	expected := "{\"name\":\"api\"}"
+	actual, _ := v.ToTfVars(false)
+
+	if expected != actual {
+		t.Log(fmt.Printf("error expected %s actual %s", expected, actual))
+		t.Fail()
+	}
+}
+
+func TestToTfVarsJsonNumber(t *testing.T) {
+	v := TerraformVars{}
+
+	v.Data = append(v.Data, Data{ID: "var-a12eqwq", Type: "vars", Attributes: Attributes{
+		Category:    "terraform",
+		Created_at:  "2021-04-14T15:08:53.569Z",
+		Description: "null",
+		Hcl:         false,
+		Key:         "count",
+		Sensitive:   false,
+		Value:       "10",
+	}, Links: Links{
+		Self: "/api/v2/workspaces/ws-xxxxxx/vars/var-xxxxxx",
+	}})
+
+	expected := "{\"count\":10}"
+	actual, _ := v.ToTfVars(false)
+
+	if expected != actual {
+		t.Log(fmt.Printf("error expected %s actual %s", expected, actual))
+		t.Fail()
+	}
+}
