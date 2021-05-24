@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -114,7 +115,19 @@ func (v *Payload) Json(indent bool) (data string, err error) {
 	return tojson(v, indent)
 }
 
-func (v *TerraformVars) TfVarsJson(indent bool) (data string, err error) {
+func cleanHcl(data string) string {
+
+	data = strings.ReplaceAll(data, "\"{", "{")
+	data = strings.ReplaceAll(data, "}\"", "}")
+	data = strings.ReplaceAll(data, "\\\"", "\"")
+	data = strings.ReplaceAll(data, "\"[", "[")
+	data = strings.ReplaceAll(data, "]\"", "]")
+	data = strings.ReplaceAll(data, "\\n", "")
+
+	return data
+}
+
+func (v *TerraformVars) ToTfVars(indent bool) (data string, err error) {
 
 	t := make(map[string]interface{})
 
@@ -141,6 +154,7 @@ func (v *TerraformVars) TfVarsJson(indent bool) (data string, err error) {
 	}
 
 	data = string(byteArray)
+	data = cleanHcl(data)
 
 	return
 

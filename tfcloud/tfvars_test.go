@@ -521,8 +521,8 @@ func TestToTfVarsJsonHcl(t *testing.T) {
 		Self: "/api/v2/workspaces/ws-xxxxxx/vars/var-xxxxxx",
 	}})
 
-	expected := "{\"cidr_subnet\":\"[\\\"10.0.5.0/24\\\"]\"}"
-	actual, _ := v.TfVarsJson(false)
+	expected := "{\"cidr_subnet\":[\"10.0.5.0/24\"]}"
+	actual, _ := v.ToTfVars(false)
 
 	if expected != actual {
 		t.Log(fmt.Printf("error expected %s actual %s", expected, actual))
@@ -546,7 +546,7 @@ func TestToTfVarsJsonStr(t *testing.T) {
 	}})
 
 	expected := "{\"name\":\"api\"}"
-	actual, _ := v.TfVarsJson(false)
+	actual, _ := v.ToTfVars(false)
 
 	if expected != actual {
 		t.Log(fmt.Printf("error expected %s actual %s", expected, actual))
@@ -570,7 +570,7 @@ func TestToTfVarsJsonNumber(t *testing.T) {
 	}})
 
 	expected := "{\"count\":10}"
-	actual, _ := v.TfVarsJson(false)
+	actual, _ := v.ToTfVars(false)
 
 	if expected != actual {
 		t.Log(fmt.Printf("error expected %s actual %s", expected, actual))

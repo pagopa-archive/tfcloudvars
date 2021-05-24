@@ -35,7 +35,7 @@ func init() {
 	flag.StringVar(&workspace, "ws", "", "Terraform cloud workspace id to read from or to save in.")
 	flag.StringVar(&fileName, "file", "", "json file with variables to load in a workspace")
 	flag.StringVar(&token, "token", LookupEnvOrString("TF_TOKEN", ""), "bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN")
-	flag.StringVar(&format, "format", "json", "Output format [json|tfjson]")
+	flag.StringVar(&format, "format", "json", "Output format [json|tfvars]")
 
 	flag.Parse()
 }
@@ -79,8 +79,8 @@ func read() {
 	switch format {
 	case "json":
 		j, err = t.Json(true)
-	case "tfjson":
-		j, err = t.TfVarsJson(true)
+	case "tfvars":
+		j, err = t.ToTfVars(true)
 	default:
 		log.Println("[INFO] wrong format value.")
 		Usage()

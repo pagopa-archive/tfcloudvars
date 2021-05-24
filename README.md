@@ -6,7 +6,6 @@ It allow:
 1. Read all variables from a workspace.
 2. Load variables - in the format provided at the step 1 - into an existing workspace.
 
-
 ## Requirements
 
 1. [Terraform cloud](https://app.terraform.io/) account with an organization and one or more workspaces.
@@ -29,7 +28,7 @@ Usage of /tmp/go-build1852085667/b001/exe/main:
   -file string
         json file with variables to load in a workspace
   -format string
-        Output format [json|tfjson] (default "json")
+        Output format [json|tfvars] (default "json")
   -token string
         bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN
   -ws string
