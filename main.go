@@ -117,6 +117,7 @@ func save() {
 
 	var content string
 
+	// Read from the standard input
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		content += scanner.Text()

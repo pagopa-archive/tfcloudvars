@@ -21,12 +21,9 @@ It allow:
 > go test ./...
 # help
 > go run main.go help
-
-Usage of /tmp/go-build3969646251/b001/exe/main:
+Usage of /var/folders/nm/x18mfd4d5vd0xrxczrjjmc3c0000gn/T/go-build1601201707/b001/exe/main:
   -do string
         Operation: [read|load|help] (default "help")
-  -file string
-        json file with variables to load in a workspace
   -format string
         Output format [json|tfvars] (default "json")
   -token string
@@ -37,11 +34,11 @@ Usage of /tmp/go-build3969646251/b001/exe/main:
 # set terraform cloud token.
 export TF_TOKEN=5i*****......................................*****2Ls
 
-> go run main.go -do read -ws ws-<my ws> > ./vars.json
+> go run main.go -do read -ws ws-a2l6l3c5 > ./vars.json
 
 # edit the file. eg: change values
 # load the variables in another workspace.
-> go run main.go -do load -ws ws-<new ws> -file ./vars.json
+> go run main.go -do load -ws ws-a2s4f4f6 < ./vars.json
 ```
 
 ## Build
