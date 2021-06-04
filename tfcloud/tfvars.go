@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -195,19 +194,15 @@ func (v *TerraformVars) Get(w string, t string) (err error) {
 }
 
 // Load TerraformVars from a json file
-func (v *TerraformVars) Load(fileName string) (err error) {
+func (v *TerraformVars) Load(input string) (err error) {
 
-	jsonFile, err := ioutil.ReadFile(fileName)
+	err = json.Unmarshal([]byte(input), &v)
 
 	if err != nil {
-		return err
+		return fmt.Errorf("Invalid json %v", err)
 	}
 
-	// fmt.Println(string(jsonFile))
-
-	json.Unmarshal([]byte(jsonFile), &v)
-
-	return nil
+	return
 }
 
 // Post the payload to the terraform cloud api that creates the variable.

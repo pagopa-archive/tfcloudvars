@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"log"
@@ -34,7 +35,6 @@ var Usage = func() {
 func init() {
 	flag.StringVar(&do, "do", "help", "Operation: [read|load|help]")
 	flag.StringVar(&workspace, "ws", "", "Terraform cloud workspace id to read from or to save in.")
-	flag.StringVar(&fileName, "file", "", "json file with variables to load in a workspace")
 	flag.StringVar(&token, "token", LookupEnvOrString("TF_TOKEN", ""), "bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN or the credeintial storage file: credentials.tfrc.json")
 	flag.StringVar(&format, "format", "json", "Output format [json|tfvars]")
 
@@ -113,15 +113,19 @@ func read() {
 
 func save() {
 
-	if fileName == "" {
-		log.Println("[INFO] file name required")
-		Usage()
-		os.Exit(0)
-	}
-
 	t := tfcloud.TerraformVars{}
 
-	err := t.Load(fileName)
+	var content string
+
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		content += scanner.Text()
+	}
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+	}
+
+	err := t.Load(content)
 
 	if err != nil {
 		log.Println(fmt.Sprintf("[ERROR] %s", err.Error()))

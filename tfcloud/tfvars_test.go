@@ -467,7 +467,66 @@ func TestPostWorkspaceNotFound(t *testing.T) {
 func TestLoadJson(t *testing.T) {
 	v := TerraformVars{}
 
-	err := v.Load("./mocks/list.json")
+	content := `{
+		"data": [
+		  {
+		  "id": "var-yYXXXXXXXXX",
+		  "type": "vars",
+		  "attributes": {
+			"key": "cidr_subnet",
+			"value": "[\"10.0.5.0/24\"]",
+			"sensitive": false,
+			"category": "terraform",
+			"hcl": true,
+			"created-at": "2021-04-14T15:08:53.569Z",
+			"description": null
+		  },
+		  "relationships": {
+			"configurable": {
+			"data": {
+			  "id": "ws-gxxxxxxxxxx",
+			  "type": "workspaces"
+			},
+			"links": {
+			  "related": "/api/v2/organizations/test/workspaces/test"
+			}
+			}
+		  },
+		  "links": {
+			"self": "/api/v2/workspaces/ws-xxxxxx/vars/var-xxxxxx"
+		  }
+		  },
+		  {
+		  "id": "var-xxxxxxxxxxxxxxx",
+		  "type": "vars",
+		  "attributes": {
+			"key": "database_name",
+			"value": "db",
+			"sensitive": false,
+			"category": "terraform",
+			"hcl": false,
+			"created-at": "2021-03-30T15:07:10.784Z",
+			"description": null
+		  },
+		  "relationships": {
+			"configurable": {
+			"data": {
+			  "id": "ws-xxxxxxxxxx",
+			  "type": "workspaces"
+			},
+			"links": {
+			  "related": "/api/v2/organizations/test/workspaces/test"
+			}
+			}
+		  },
+		  "links": {
+			"self": "/api/v2/workspaces/ws-xxxxxx/vars/var-xxxxx"
+		  }
+		  }
+		]
+	  }`
+
+	err := v.Load(content)
 
 	if err != nil {
 		t.Log(err)
@@ -492,13 +551,13 @@ func TestLoadJson(t *testing.T) {
 
 }
 
-func TestFileNotFound(t *testing.T) {
+func TestInvalidJson(t *testing.T) {
 	v := TerraformVars{}
 
-	err := v.Load("./mocks/notfound.json")
+	err := v.Load("aaa")
 
 	expected := err.Error()
-	actual := "open ./mocks/notfound.json: no such file or directory"
+	actual := "Invalid json invalid character 'a' looking for beginning of value"
 
 	if expected != actual {
 		t.Log(fmt.Printf("error expected %s actual %s", expected, actual))
