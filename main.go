@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/uolter/cptfcvars/tfcloud"
 )
@@ -34,7 +35,7 @@ func init() {
 	flag.StringVar(&do, "do", "help", "Operation: [read|load|help]")
 	flag.StringVar(&workspace, "ws", "", "Terraform cloud workspace id to read from or to save in.")
 	flag.StringVar(&fileName, "file", "", "json file with variables to load in a workspace")
-	flag.StringVar(&token, "token", LookupEnvOrString("TF_TOKEN", ""), "bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN")
+	flag.StringVar(&token, "token", LookupEnvOrString("TF_TOKEN", ""), "bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN or the credeintial storage file: credentials.tfrc.json")
 	flag.StringVar(&format, "format", "json", "Output format [json|tfvars]")
 
 	flag.Parse()
@@ -49,9 +50,25 @@ func main() {
 	}
 
 	if token == "" {
-		log.Println("[INFO] token required")
-		Usage()
-		os.Exit(0)
+
+		c := tfcloud.TfConfig{}
+		dirname, err := os.UserHomeDir()
+
+		if err != nil {
+			log.Fatal(err)
+			Usage()
+			os.Exit(0)
+		}
+
+		err = c.Read(filepath.Join(dirname, ".terraform.d", "credentials.tfrc.json"))
+
+		if err == nil {
+			token = c.Credentials.App_terraform_io.Token
+		} else {
+			log.Println("[INFO] token required")
+			Usage()
+			os.Exit(0)
+		}
 	}
 
 	switch do {

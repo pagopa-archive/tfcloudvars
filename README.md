@@ -22,7 +22,7 @@ It allow:
 # help
 > go run main.go help
 
-Usage of /tmp/go-build1852085667/b001/exe/main:
+Usage of /tmp/go-build3969646251/b001/exe/main:
   -do string
         Operation: [read|load|help] (default "help")
   -file string
@@ -30,7 +30,7 @@ Usage of /tmp/go-build1852085667/b001/exe/main:
   -format string
         Output format [json|tfvars] (default "json")
   -token string
-        bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN
+        bearer token for authenticatio. If not defined it reads the env variable TF_TOKEN or the credeintial storage file: credentials.tfrc.json
   -ws string
         Terraform cloud workspace id to read from or to save in.
 
